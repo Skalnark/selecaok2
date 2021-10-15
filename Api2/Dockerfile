@@ -1,22 +1,22 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:3.1 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8081
+ENV ASPNETCORE_URLS http://+:8081
 
-FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["api2/api2.csproj", "api2/"]
-RUN dotnet restore "api2/api2.csproj"
+COPY ["Api2/Api2.csproj", "Api2/"]
+RUN dotnet restore "Api2/Api2.csproj"
 COPY . .
-WORKDIR "/src/api2"
-RUN dotnet build "api2.csproj" -c Release -o /app/build
+WORKDIR "/src/Api2"
+RUN dotnet build "Api2.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "api2.csproj" -c Release -o /app/publish
+RUN dotnet publish "Api2.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "api2.dll"]
+ENTRYPOINT ["dotnet", "Api2.dll"]

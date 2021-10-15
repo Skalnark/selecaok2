@@ -1,5 +1,4 @@
 using System;
-using Api1.Services;
 using Xunit;
 
 namespace tests
@@ -7,12 +6,25 @@ namespace tests
     public class Api1
     {
         [Fact]
-        public void ValorCorretoTaxaJuros()
+        public async void ValorCorretoTaxaJuros()
         {
-            var taxa = new TaxaService().GetTaxaJuros();
-            double expected = 0.01;
+            double esperado = 0.01;
+            double atual = double.Epsilon;
+            
+            using (var client = new System.Net.Http.HttpClient())
+            {
+                client.BaseAddress = new Uri(Environment.GetEnvironmentVariable("Api1Uri"));
 
-            Assert.Equal(expected, taxa);
+                var response = await client.GetAsync($"api/Taxa/taxaJuros");
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseString = await response.Content.ReadAsStringAsync();
+
+                    atual = Convert.ToDouble(responseString);
+                }
+            }
+
+            Assert.Equal(esperado, atual);
         }
     }
 }

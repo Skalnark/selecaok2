@@ -14,8 +14,6 @@ namespace Api1.Controllers
             _taxaService = taxaService;
         }
 
-        [HttpGet]
-
         [HttpGet("taxaJuros")]
         public IActionResult Get()
         {
