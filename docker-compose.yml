@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  api1:
+    build:
+      context: .
+      dockerfile: ./api1/Dockerfile
+    ports: 
+      - "8080:80"
+      - "8081:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+  api2:
+    build:
+      context: .
+      dockerfile: ./api2/Dockerfile
+    ports: 
+      - "4000:80"
+      - "4001:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
