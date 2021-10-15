@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Api2.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,12 +19,6 @@ namespace Api2.Controllers
         {
             var result = _jurosService.CalcularJuros(valorInicial, meses);
             return Ok(result);
-        }
-
-        [HttpGet("source")]
-        public IActionResult Get()
-        {
-            return Ok("Hello World");
         }
     }
 }
